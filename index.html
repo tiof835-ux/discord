@@ -3,78 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THC-Cloud - Cloud Gaming Emulado</title>
+    <title>THC-Cloud - Juega en la Nube como Now.gg</title>
     <style>
-        body { font-family: Arial, sans-serif; background: linear-gradient(to bottom, #1a1a1a, #333); color: white; margin: 0; padding: 0; }
-        header { background: #222; padding: 20px; text-align: center; }
+        body { font-family: Arial, sans-serif; background: #0f0f0f; color: white; margin: 0; padding: 0; }
+        header { background: #1a1a1a; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
         h1 { color: #00ff00; margin: 0; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
-        .game-card { background: #444; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: transform 0.2s; }
+        .search-bar { display: flex; }
+        input { padding: 8px; width: 200px; border: none; border-radius: 5px 0 0 5px; }
+        button { padding: 8px 15px; background: #00ff00; color: black; border: none; border-radius: 0 5px 5px 0; cursor: pointer; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .game-card { background: #222; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: transform 0.2s; }
         .game-card:hover { transform: scale(1.05); }
-        .game-card img { width: 100%; height: 120px; object-fit: cover; border-radius: 5px; }
-        .game-card h3 { margin: 10px 0; }
-        iframe { width: 100%; height: 500px; border: none; border-radius: 10px; margin-top: 20px; }
-        button { padding: 10px 20px; background: #00ff00; color: black; border: none; border-radius: 5px; cursor: pointer; margin: 10px; }
-        button:hover { background: #00cc00; }
+        .game-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 5px; }
+        .game-card h3 { margin: 10px 0; color: #00ff00; }
+        .game-card p { font-size: 14px; }
+        #game-player { display: none; margin-top: 20px; }
+        iframe { width: 100%; height: 600px; border: none; border-radius: 10px; }
+        .close-btn { padding: 10px; background: red; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
     <header>
         <h1>THC-Cloud</h1>
-        <p>Juega en la nube sin instalar nada - Inspirado en CloudMoon</p>
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Buscar juegos...">
+            <button onclick="searchGames()">Buscar</button>
+        </div>
     </header>
     <div class="container">
-        <h2>Selecciona un Juego</h2>
-        <div class="game-grid">
-            <div class="game-card" onclick="loadGame('roblox')">
-                <img src="https://via.placeholder.com/200x120?text=Roblox" alt="Roblox">
-                <h3>Roblox (PC Emulado)</h3>
-                <p>Juega Roblox en navegador - Enlace a CloudMoon o sitio oficial</p>
+        <h2>Juegos Populares</h2>
+        <div class="game-grid" id="game-grid">
+            <div class="game-card" onclick="playGame('roblox')">
+                <img src="https://via.placeholder.com/250x150?text=Roblox" alt="Roblox">
+                <h3>Roblox</h3>
+                <p>Juega Roblox en PC sin instalar - Enlace a Now.gg</p>
             </div>
-            <div class="game-card" onclick="loadGame('youtube')">
-                <img src="https://via.placeholder.com/200x120?text=YouTube" alt="YouTube">
+            <div class="game-card" onclick="playGame('youtube')">
+                <img src="https://via.placeholder.com/250x150?text=YouTube" alt="YouTube">
                 <h3>YouTube Gaming</h3>
                 <p>Videos y streams de juegos</p>
             </div>
-            <div class="game-card" onclick="loadGame('chrome')">
-                <img src="https://via.placeholder.com/200x120?text=Chrome" alt="Chrome">
-                <h3>Navegador Chrome</h3>
-                <p>Simulación de navegador web</p>
+            <div class="game-card" onclick="playGame('chrome')">
+                <img src="https://via.placeholder.com/250x150?text=Chrome" alt="Chrome">
+                <h3>Navegador Web</h3>
+                <p>Simula un navegador como Chrome</p>
             </div>
-            <!-- Agrega más juegos si quieres -->
+            <!-- Agrega más juegos aquí, ej. Fortnite, Minecraft, etc. -->
         </div>
         
-        <div id="game-area" style="display: none;">
+        <div id="game-player">
             <h2 id="game-title"></h2>
             <iframe id="game-iframe" src=""></iframe>
-            <button onclick="closeGame()">Cerrar</button>
+            <button class="close-btn" onclick="closePlayer()">Cerrar</button>
         </div>
     </div>
     
     <script>
-        function loadGame(game) {
-            const gameArea = document.getElementById('game-area');
+        function playGame(game) {
+            const player = document.getElementById('game-player');
             const title = document.getElementById('game-title');
             const iframe = document.getElementById('game-iframe');
             
             if (game === 'roblox') {
-                title.textContent = 'Jugando Roblox (Enlace a CloudMoon)';
-                iframe.src = 'https://web.cloudmoonapp.com/es/';  // Enlace directo a CloudMoon para Roblox
+                title.textContent = 'Jugando Roblox en THC-Cloud';
+                iframe.src = 'https://now.gg/play/roblox-corporation/5349/roblox';  // Enlace directo a Roblox en now.gg
             } else if (game === 'youtube') {
                 title.textContent = 'YouTube Gaming';
-                iframe.src = 'https://www.youtube.com/results?search_query=roblox+gaming';  // Página de búsqueda de YouTube
+                iframe.src = 'https://www.youtube.com/results?search_query=roblox+now.gg';  // Búsqueda en YouTube
             } else if (game === 'chrome') {
                 title.textContent = 'Navegador Simulado';
-                iframe.src = 'https://www.google.com';  // Simulación básica de navegador
+                iframe.src = 'https://www.google.com';  // Simulación de Chrome
             }
             
-            gameArea.style.display = 'block';
+            player.style.display = 'block';
         }
         
-        function closeGame() {
-            document.getElementById('game-area').style.display = 'none';
+        function closePlayer() {
+            document.getElementById('game-player').style.display = 'none';
             document.getElementById('game-iframe').src = '';
+        }
+        
+        function searchGames() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                card.style.display = title.includes(query) ? 'block' : 'none';
+            });
         }
     </script>
 </body>
